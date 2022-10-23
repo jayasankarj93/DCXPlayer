@@ -34,7 +34,7 @@ async def skip_stream(song: Song, lang):
             await safone[chat.id].delete()
         except BaseException:
             pass
-    infomsg = await song.request_msg.reply_text(lang["downloading"])
+#    infomsg = await song.request_msg.reply_text(lang["downloading"])
     await pytgcalls.change_stream(
         chat.id,
         get_quality(song),
@@ -48,7 +48,7 @@ async def start_stream(song: Song, lang):
             await safone[chat.id].delete()
         except BaseException:
             pass
-    infomsg = await song.request_msg.reply_text(lang["downloading"])
+#    infomsg = await song.request_msg.reply_text(lang["downloading"])
     try:
         await pytgcalls.join_group_call(
             chat.id,
