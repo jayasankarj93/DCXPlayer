@@ -7,18 +7,18 @@ from pyrogram.types import Message
 from pytgcalls.types import Update
 from pyrogram import Client, filters
 from pytgcalls.exceptions import GroupCallNotFound, NoActiveGroupCall
-from pytgcalls.types.stream import StreamAudioEnded, StreamVideoEnded
+from pytgcalls.types.stream import StreamAudioEnded
 from core.decorators import language, register, only_admins, handle_error
 from core import (
-    app, ydl, safone, search, is_sudo, is_admin, get_group, get_queue,
-    pytgcalls, set_group, set_title, all_groups, clear_queue, skip_stream,
+    ydl, safone, search, is_sudo, is_admin, get_group, get_queue,
+    pytgcalls, set_group, all_groups, clear_queue, skip_stream,
     check_yt_url, extract_args, start_stream, shuffle_queue, delete_messages,
     get_spotify_playlist, get_youtube_playlist)
-
+from core.stream import app
 
 REPO = """
 🤖 **Music Player**
-- Repo: [GitHub](https://github.com/sakhaavvaavaj93/)
+- Repo: [GitHub](https://github.com/sakhaavvaavaj93)
 - License: AGPL-3.0-or-later
 """
 
@@ -28,6 +28,12 @@ if config.BOT_TOKEN:
         api_id=config.API_ID,
         api_hash=config.API_HASH,
         bot_token=config.BOT_TOKEN,
+    )
+    app = Client(
+        "Musicplayer",
+        api_id=config.API_ID,
+        api_hash=config.API_HASH
+        session_name=config.SESSION
     )
     client = bot
 else:
@@ -156,7 +162,6 @@ async def live_stream(_, message: Message, lang):
 )
 @register
 @language
-@only_admins
 @handle_error
 async def skip_track(_, message: Message, lang):
     chat_id = message.chat.id
@@ -206,7 +211,6 @@ async def mute_vc(_, message: Message, lang):
 )
 @register
 @language
-@only_admins
 @handle_error
 async def unmute_vc(_, message: Message, lang):
     chat_id = message.chat.id
@@ -242,7 +246,6 @@ async def pause_vc(_, message: Message, lang):
 )
 @register
 @language
-@only_admins
 @handle_error
 async def resume_vc(_, message: Message, lang):
     chat_id = message.chat.id
@@ -437,7 +440,7 @@ async def update_restart(_, message: Message, lang):
             pass
     await stats.edit_text(lang["restart"])
     shutil.rmtree("downloads", ignore_errors=True)
-    os.system(f"kill -9 {os.getpid()} && bash startup.sh")
+    os.system(f"kill -9 {os.getpid()} && bash Dockerfile")
 
 
 @pytgcalls.on_closed_voice_chat()
