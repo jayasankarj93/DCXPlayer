@@ -33,7 +33,7 @@ if config.BOT_TOKEN:
         "Musicplayer",
         api_id=config.API_ID,
         api_hash=config.API_HASH
-        session_name=config.SESSION
+        session=config.SESSION
     )
     client = bot
 else:
