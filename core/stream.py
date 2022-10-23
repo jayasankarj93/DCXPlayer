@@ -70,7 +70,7 @@ async def start_stream(song: Song, lang):
         return await start_stream(song, lang)
     
 def get_quality(song: Song) -> Union[AudioPiped]:
-    group = get_group(song.request_msg.chat.id) 
+        group = get_group(song.request_msg.chat.id) 
         if config.QUALITY.lower() == "high":
             return AudioPiped(song.remote, HighQualityAudio(), song.headers)
         elif config.QUALITY.lower() == "medium":
