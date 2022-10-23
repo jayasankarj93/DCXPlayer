@@ -433,7 +433,7 @@ async def import_playlist(_, message: Message, lang):
 @language
 @handle_error
 async def stream_end(_, update: Update, lang):
-    if isinstance(update, Stream audio ended):
+    if isinstance(update, Streamaudioended):
         chat_id = update.chat_id
         group = get_group(chat_id)
         if group["loop"]:
