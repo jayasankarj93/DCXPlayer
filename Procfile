@@ -1,1 +1,1 @@
-worker: bash startup.sh
+worker: bash main.py
