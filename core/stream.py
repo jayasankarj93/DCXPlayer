@@ -13,8 +13,8 @@ from pyrogram.raw.functions.phone import CreateGroupCall
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from pytgcalls.exceptions import GroupCallNotFound, NoActiveGroupCall
 from pytgcalls.types.input_stream.quality import (
-    LowQualityAudio, LowQualityVideo, HighQualityAudio, HighQualityVideo,
-    MediumQualityAudio, MediumQualityVideo)
+    LowQualityAudio, HighQualityAudio,
+    MediumQualityAudio)
 
 
 safone = {}
