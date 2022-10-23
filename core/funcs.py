@@ -1,21 +1,3 @@
-"""
-Music Player, Telegram Voice Chat Bot
-Copyright (c) 2021-present Asm Safone <https://github.com/AsmSafone>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>
-"""
-
 import os
 import re
 import math
@@ -182,59 +164,6 @@ def TimeFormatter(milliseconds: int) -> str:
         + ((str(milliseconds) + " MS, ") if milliseconds else "")
     )
     return tmp[:-2]
-
-
-def changeImageSize(maxWidth, maxHeight, image):
-    widthRatio = maxWidth / image.size[0]
-    heightRatio = maxHeight / image.size[1]
-    newWidth = int(widthRatio * image.size[0])
-    newHeight = int(heightRatio * image.size[1])
-    newImage = image.resize((newWidth, newHeight))
-    return newImage
-
-
-async def generate_cover(title, ctitle, chatid, thumbnail):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(thumbnail) as resp:
-            if resp.status == 200:
-                f = await aiofiles.open(f"thumb{chatid}.png", mode="wb")
-                await f.write(await resp.read())
-                await f.close()
-
-    theme = random.choice(themes)
-    ctitle = await special_to_normal(ctitle)
-    image1 = Image.open(f"thumb{chatid}.png")
-    image2 = Image.open(f"theme/{theme}.PNG")
-    image3 = changeImageSize(1280, 720, image1)
-    image4 = changeImageSize(1280, 720, image2)
-    image5 = image3.convert("RGBA")
-    image6 = image4.convert("RGBA")
-    Image.alpha_composite(image5, image6).save(f"temp{chatid}.png")
-    img = Image.open(f"temp{chatid}.png")
-    draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("theme/font.ttf", 85)
-    font2 = ImageFont.truetype("theme/font.ttf", 60)
-    draw.text(
-        (20, 45),
-        f"Playing on: {ctitle[:14]}...",
-        fill="white",
-        stroke_width=1,
-        stroke_fill="white",
-        font=font2,
-    )
-    draw.text(
-        (25, 595),
-        f"{title[:27]}...",
-        fill="white",
-        stroke_width=2,
-        stroke_fill="white",
-        font=font,
-    )
-    img.save(f"final{chatid}.png")
-    os.remove(f"temp{chatid}.png")
-    os.remove(f"thumb{chatid}.png")
-    final = f"final{chatid}.png"
-    return final
 
 
 async def special_to_normal(ctitle):
