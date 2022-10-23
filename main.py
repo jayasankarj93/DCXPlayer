@@ -117,7 +117,7 @@ async def live_stream(_, message: Message, lang):
         check = await is_admin(message)
  #       if not check:
  #           k = await message.reply_text(lang["notAllowed"])
-          return await delete_messages([message])
+    return await delete_messages([message])
     args = extract_args(message.text)
  #   if args is None:
  #       k = await message.reply_text(lang["notFound"])
