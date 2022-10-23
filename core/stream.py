@@ -1,20 +1,3 @@
-"""
-Music Player, Telegram Voice Chat Bot
-Copyright (c) 2021-present Asm Safone <https://github.com/AsmSafone>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>
-"""
 
 import os
 from typing import Union
@@ -57,31 +40,7 @@ async def skip_stream(song: Song, lang):
         chat.id,
         get_quality(song),
     )
-    await set_title(chat.id, song.title, client=app)
-    thumb = await generate_cover(
-        song.title,
-        chat.title,
-        chat.id,
-        song.thumb,
-    )
-    safone[chat.id] = await song.request_msg.reply_photo(
-        photo=thumb,
-        caption=lang["playing"]
-        % (
-            song.title,
-            song.source,
-            song.duration,
-            song.request_msg.chat.id,
-            song.requested_by.mention
-            if song.requested_by
-            else song.request_msg.sender_chat.title,
-        ),
-        quote=False,
-    )
-    await infomsg.delete()
-    if os.path.exists(thumb):
-        os.remove(thumb)
-
+    
 
 async def start_stream(song: Song, lang):
     chat = song.request_msg.chat
@@ -109,56 +68,10 @@ async def start_stream(song: Song, lang):
             )
         )
         return await start_stream(song, lang)
-    await set_title(chat.id, song.title, client=app)
-    thumb = await generate_cover(
-        song.title,
-        chat.title,
-        chat.id,
-        song.thumb,
-    )
-    safone[chat.id] = await song.request_msg.reply_photo(
-        photo=thumb,
-        caption=lang["playing"]
-        % (
-            song.title,
-            song.source,
-            song.duration,
-            song.request_msg.chat.id,
-            song.requested_by.mention
-            if song.requested_by
-            else song.request_msg.sender_chat.title,
-        ),
-        quote=False,
-    )
-    await infomsg.delete()
-    if os.path.exists(thumb):
-        os.remove(thumb)
-
-
-def get_quality(song: Song) -> Union[AudioPiped, AudioVideoPiped]:
+    
+def get_quality(song: Song) -> Union[AudioPiped]:
     group = get_group(song.request_msg.chat.id)
-    if group["stream_mode"] == "video":
-        if config.QUALITY.lower() == "high":
-            return AudioVideoPiped(
-                song.remote, HighQualityAudio(), HighQualityVideo(), song.headers
-            )
-        elif config.QUALITY.lower() == "medium":
-            return AudioVideoPiped(
-                song.remote,
-                MediumQualityAudio(),
-                MediumQualityVideo(),
-                song.headers,
-            )
-        elif config.QUALITY.lower() == "low":
-            return AudioVideoPiped(
-                song.remote, LowQualityAudio(), LowQualityVideo(), song.headers
-            )
-        else:
-            print("WARNING: Invalid Quality Specified. Defaulting to High!")
-            return AudioVideoPiped(
-                song.remote, HighQualityAudio(), HighQualityVideo(), song.headers
-            )
-    else:
+    group["stream_mode"] == "audio": 
         if config.QUALITY.lower() == "high":
             return AudioPiped(song.remote, HighQualityAudio(), song.headers)
         elif config.QUALITY.lower() == "medium":
