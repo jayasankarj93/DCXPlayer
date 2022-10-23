@@ -1,5 +1,5 @@
 echo ">> FETCHING UPSTREAM..."
-git clone https://github.com/sakhaavvaavaj9/DCXPlayer
+git clone https://github.com/jayasankarj93/DCXPlayer
 echo ">> INSTALLING REQUIREMENTS..."
 cd /DCXPlayer 
 pip3 install -U -r requirements.txt
