@@ -84,7 +84,7 @@ async def play_stream(_, message: Message, lang):
     song = await search(message)
 #    if song is None:
 #        k = await message.reply_text(lang["notFound"])
-        return await delete_messages([message])
+    return await delete_messages([message])
     ok, status = await song.parse()
     if not ok:
         raise Exception(status)
@@ -117,11 +117,11 @@ async def live_stream(_, message: Message, lang):
         check = await is_admin(message)
  #       if not check:
  #           k = await message.reply_text(lang["notAllowed"])
- #           return await delete_messages([message, k])
+          return await delete_messages([message])
     args = extract_args(message.text)
  #   if args is None:
  #       k = await message.reply_text(lang["notFound"])
- #       return await delete_messages([message, k])
+      return await delete_messages([message])
     if " " in args and args.count(" ") == 1 and args[-5:] == "parse":
         song = Song({"source": args.split(" ")[0], "parsed": False}, message)
     else:
