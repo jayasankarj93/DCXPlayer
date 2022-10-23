@@ -84,7 +84,7 @@ async def play_stream(_, message: Message, lang):
     song = await search(message)
 #    if song is None:
 #        k = await message.reply_text(lang["notFound"])
-#        return await delete_messages([message, k])
+        return await delete_messages([message])
     ok, status = await song.parse()
     if not ok:
         raise Exception(status)
@@ -99,7 +99,7 @@ async def play_stream(_, message: Message, lang):
 #            lang["addedToQueue"] % (song.title, song.source, len(queue)),
 #            disable_web_page_preview=True,
 #        )
-#        await delete_messages([message, k])
+        await delete_messages([message])
 
 
 @client.on_message(
@@ -163,7 +163,6 @@ async def live_stream(_, message: Message, lang):
 )
 @register
 @language
-@only_admins
 @handle_error
 async def skip_track(_, message: Message, lang):
     chat_id = message.chat.id
@@ -267,7 +266,7 @@ async def resume_vc(_, message: Message, lang):
 
 
 @client.on_message(
-    filters.command(["stop", "leave"], config.PREFIXES)
+    filters.command(["stop", "end", "leave"], config.PREFIXES)
     & ~filters.private
     & ~filters.edited
 )
