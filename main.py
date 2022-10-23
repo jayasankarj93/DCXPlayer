@@ -121,7 +121,7 @@ async def live_stream(_, message: Message, lang):
     args = extract_args(message.text)
  #   if args is None:
  #       k = await message.reply_text(lang["notFound"])
-      return await delete_messages([message])
+    return await delete_messages([message])
     if " " in args and args.count(" ") == 1 and args[-5:] == "parse":
         song = Song({"source": args.split(" ")[0], "parsed": False}, message)
     else:
@@ -385,7 +385,7 @@ async def import_playlist(_, message: Message, lang):
         check = await is_admin(message)
 #        if not check:
 #            k = await message.reply_text(lang["notAllowed"])
-#            return await delete_messages([message, k])
+    return await delete_messages([message])
     if message.reply_to_message:
         text = message.reply_to_message.text
     else:
@@ -398,7 +398,7 @@ async def import_playlist(_, message: Message, lang):
             temp_queue = get_youtube_playlist(text, message)
 #        except BaseException:
 #            k = await message.reply_text(lang["notFound"])
-            return await delete_messages([message, k])
+         return await delete_messages([message, k])
     elif "open.spotify.com/playlist/" in text:
         if not config.SPOTIFY:
             k = await message.reply_text(lang["spotifyNotEnabled"])
