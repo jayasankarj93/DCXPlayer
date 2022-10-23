@@ -170,7 +170,7 @@ async def skip_track(_, message: Message, lang):
 #    if group["loop"]:
 #        await skip_stream(group["now_playing"], lang)
 #    else:
-        queue = get_queue(chat_id)
+    queue = get_queue(chat_id)
         if len(queue) > 0:
             next_song = await queue.get()
             if not next_song.parsed:
