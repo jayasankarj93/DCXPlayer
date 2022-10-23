@@ -149,11 +149,11 @@ async def live_stream(_, message: Message, lang):
     else:
         queue = get_queue(chat_id)
         await queue.put(song)
- #       k = await message.reply_text(
- #           lang["addedToQueue"] % (song.title, song.source, len(queue)),
- #           disable_web_page_preview=True,
- #       )
- #       await delete_messages([message, k])
+#        k = await message.reply_text(
+#            lang["addedToQueue"] % (song.title, song.source, len(queue)),
+#            disable_web_page_preview=True,
+#        )
+        await delete_messages([message])
 
 
 @client.on_message(
@@ -167,9 +167,9 @@ async def live_stream(_, message: Message, lang):
 async def skip_track(_, message: Message, lang):
     chat_id = message.chat.id
     group = get_group(chat_id)
-    if group["loop"]:
-        await skip_stream(group["now_playing"], lang)
-    else:
+#    if group["loop"]:
+#        await skip_stream(group["now_playing"], lang)
+#    else:
         queue = get_queue(chat_id)
         if len(queue) > 0:
             next_song = await queue.get()
@@ -182,13 +182,13 @@ async def skip_track(_, message: Message, lang):
             await delete_messages([message])
         else:
             set_group(chat_id, is_playing=False, now_playing=None)
-            await set_title(message, "")
+#            await set_title(message, "")
             try:
                 await pytgcalls.leave_group_call(chat_id)
-                k = await message.reply_text(lang["queueEmpty"])
-            except (NoActiveGroupCall, GroupCallNotFound):
-                k = await message.reply_text(lang["notActive"])
-            await delete_messages([message, k])
+#                k = await message.reply_text(lang["queueEmpty"])
+#            except (NoActiveGroupCall, GroupCallNotFound):
+#                k = await message.reply_text(lang["notActive"])
+            await delete_messages([message])
 
 
 @client.on_message(
@@ -202,10 +202,10 @@ async def mute_vc(_, message: Message, lang):
     chat_id = message.chat.id
     try:
         await pytgcalls.mute_stream(chat_id)
-  #      k = await message.reply_text(lang["muted"])
-    except (NoActiveGroupCall, GroupCallNotFound):
-        k = await message.reply_text(lang["notActive"])
-    await delete_messages([message, k])
+#        k = await message.reply_text(lang["muted"])
+#    except (NoActiveGroupCall, GroupCallNotFound):
+#        k = await message.reply_text(lang["notActive"])
+    await delete_messages([message])
 
 
 @client.on_message(
@@ -221,10 +221,10 @@ async def unmute_vc(_, message: Message, lang):
     chat_id = message.chat.id
     try:
         await pytgcalls.unmute_stream(chat_id)
-  #      k = await message.reply_text(lang["unmuted"])
-    except (NoActiveGroupCall, GroupCallNotFound):
-        k = await message.reply_text(lang["notActive"])
-    await delete_messages([message, k])
+#        k = await message.reply_text(lang["unmuted"])
+#    except (NoActiveGroupCall, GroupCallNotFound):
+#        k = await message.reply_text(lang["notActive"])
+    await delete_messages([message])
 
 
 @client.on_message(
@@ -240,10 +240,10 @@ async def pause_vc(_, message: Message, lang):
     chat_id = message.chat.id
     try:
         await pytgcalls.pause_stream(chat_id)
- #       k = await message.reply_text(lang["paused"])
-    except (NoActiveGroupCall, GroupCallNotFound):
-        k = await message.reply_text(lang["notActive"])
-    await delete_messages([message, k])
+#        k = await message.reply_text(lang["paused"])
+#    except (NoActiveGroupCall, GroupCallNotFound):
+#        k = await message.reply_text(lang["notActive"])
+    await delete_messages([message])
 
 
 @client.on_message(
@@ -259,10 +259,10 @@ async def resume_vc(_, message: Message, lang):
     chat_id = message.chat.id
     try:
         await pytgcalls.resume_stream(chat_id)
- #       k = await message.reply_text(lang["resumed"])
-    except (NoActiveGroupCall, GroupCallNotFound):
-        k = await message.reply_text(lang["notActive"])
-    await delete_messages([message, k])
+#        k = await message.reply_text(lang["resumed"])
+#    except (NoActiveGroupCall, GroupCallNotFound):
+#        k = await message.reply_text(lang["notActive"])
+    await delete_messages([message])
 
 
 @client.on_message(
@@ -281,10 +281,10 @@ async def leave_vc(_, message: Message, lang):
     clear_queue(chat_id)
     try:
         await pytgcalls.leave_group_call(chat_id)
-  #      k = await message.reply_text(lang["leaveVC"])
-    except (NoActiveGroupCall, GroupCallNotFound):
-        k = await message.reply_text(lang["notActive"])
-    await delete_messages([message, k])
+#        k = await message.reply_text(lang["leaveVC"])
+#    except (NoActiveGroupCall, GroupCallNotFound):
+#        k = await message.reply_text(lang["notActive"])
+    await delete_messages([message])
 
 
 @client.on_message(
@@ -300,9 +300,9 @@ async def queue_list(_, message: Message, lang):
     queue = get_queue(chat_id)
     if len(queue) > 0:
         k = await message.reply_text(str(queue), disable_web_page_preview=True)
-    else:
-        k = await message.reply_text(lang["queueEmpty"])
-    await delete_messages([message, k])
+#    else:
+#        k = await message.reply_text(lang["queueEmpty"])
+    await delete_messages([message])
 
 @client.on_message(
     filters.command(["mode", "switch"], config.PREFIXES)
@@ -383,21 +383,21 @@ async def import_playlist(_, message: Message, lang):
     group = get_group(chat_id)
     if group["admins_only"]:
         check = await is_admin(message)
-        if not check:
-            k = await message.reply_text(lang["notAllowed"])
-            return await delete_messages([message, k])
+#        if not check:
+#            k = await message.reply_text(lang["notAllowed"])
+#            return await delete_messages([message, k])
     if message.reply_to_message:
         text = message.reply_to_message.text
     else:
         text = extract_args(message.text)
-    if text == "":
-        k = await message.reply_text(lang["notFound"])
-        return await delete_messages([message, k])
+#    if text == "":
+#        k = await message.reply_text(lang["notFound"])
+#        return await delete_messages([message, k])
     if "youtube.com/playlist?list=" in text:
         try:
             temp_queue = get_youtube_playlist(text, message)
-        except BaseException:
-            k = await message.reply_text(lang["notFound"])
+#        except BaseException:
+#            k = await message.reply_text(lang["notFound"])
             return await delete_messages([message, k])
     elif "open.spotify.com/playlist/" in text:
         if not config.SPOTIFY:
@@ -405,12 +405,12 @@ async def import_playlist(_, message: Message, lang):
             return await delete_messages([message, k])
         try:
             temp_queue = get_spotify_playlist(text, message)
-        except BaseException:
-            k = await message.reply_text(lang["notFound"])
-            return await delete_messages([message, k])
-    else:
-        k = await message.reply_text(lang["invalidFile"])
-        return await delete_messages([message, k])
+#        except BaseException:
+#            k = await message.reply_text(lang["notFound"])
+#            return await delete_messages([message, k])
+#    else:
+#        k = await message.reply_text(lang["invalidFile"])
+#        return await delete_messages([message, k])
     queue = get_queue(chat_id)
     if not group["is_playing"]:
         song = await temp_queue.__anext__()
@@ -425,8 +425,8 @@ async def import_playlist(_, message: Message, lang):
     else:
         async for _song in temp_queue:
             await queue.put(_song)
-    k = await message.reply_text(lang["queueImported"] % len(group["queue"]))
-    await delete_messages([message, k])
+#    k = await message.reply_text(lang["queueImported"] % len(group["queue"]))
+    await delete_messages([message])
 
 @pytgcalls.on_stream_end()
 @language
@@ -453,7 +453,7 @@ async def stream_end(_, update: Update, lang):
                         await safone[chat_id].delete()
                     except BaseException:
                         pass
-                await set_title(chat_id, "", client=app)
+#                await set_title(chat_id, "", client=app)
                 set_group(chat_id, is_playing=False, now_playing=None)
                 await pytgcalls.leave_group_call(chat_id)
 
@@ -467,7 +467,7 @@ async def closed_vc(_, chat_id: int):
                 await safone[chat_id].delete()
             except BaseException:
                 pass
-        await set_title(chat_id, "", client=app)
+#        await set_title(chat_id, "", client=app)
         set_group(chat_id, now_playing=None, is_playing=False)
         clear_queue(chat_id)
 
@@ -481,7 +481,7 @@ async def kicked_vc(_, chat_id: int):
                 await safone[chat_id].delete()
             except BaseException:
                 pass
-        await set_title(chat_id, "", client=app)
+#        await set_title(chat_id, "", client=app)
         set_group(chat_id, now_playing=None, is_playing=False)
         clear_queue(chat_id)
 
@@ -495,7 +495,7 @@ async def left_vc(_, chat_id: int):
                 await safone[chat_id].delete()
             except BaseException:
                 pass
-        await set_title(chat_id, "", client=app)
+#        await set_title(chat_id, "", client=app)
         set_group(chat_id, now_playing=None, is_playing=False)
         clear_queue(chat_id)
 
